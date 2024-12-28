@@ -1,4 +1,4 @@
-package com.bitestream.project;
+package com.swipebyte.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

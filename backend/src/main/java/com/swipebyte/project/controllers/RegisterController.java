@@ -1,16 +1,18 @@
-package com.bitestream.project.controllers;
+package com.swipebyte.project.controllers;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.bitestream.project.dto.*;
-import com.bitestream.project.entity.*;
+
+import com.swipebyte.project.dto.*;
+import com.swipebyte.project.entity.*;
+import com.swipebyte.project.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-import com.bitestream.project.repository.UserRepository;
 
 @RestController
 public class RegisterController {

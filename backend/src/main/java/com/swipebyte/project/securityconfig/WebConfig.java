@@ -1,4 +1,4 @@
-package com.bitestream.project.securityconfig;
+package com.swipebyte.project.securityconfig;
 
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;

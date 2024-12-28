@@ -1,7 +1,9 @@
-package com.bitestream.project;
+package com.swipebyte.project;
 
-import com.bitestream.project.entity.Restaurant;
 import org.junit.jupiter.api.Test;
+
+import com.swipebyte.project.entity.Restaurant;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;

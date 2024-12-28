@@ -1,11 +1,11 @@
-package com.bitestream.project.dto;
+package com.swipebyte.project.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
 
-import com.bitestream.project.entity.*;
+import com.swipebyte.project.entity.*;
 
 @Getter
 @Setter

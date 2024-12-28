@@ -1,4 +1,4 @@
-package com.bitestream.project.entity;
+package com.swipebyte.project.entity;
 
 import java.util.List;
 import jakarta.persistence.*;

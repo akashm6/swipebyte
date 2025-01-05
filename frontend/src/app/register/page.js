@@ -1,5 +1,6 @@
 "use client";
 import { useState, } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -12,6 +13,11 @@ export default function RegisterPage() {
     });
 
     const [message, setMessage] = useState('');
+
+    const router = useRouter()
+    const handleRedirect = () => {
+        router.push("/setup_profile")
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,10 +38,10 @@ export default function RegisterPage() {
 
             if (response.ok) {
                 const data = await response.text();
-                setMessage(data); // Success message
+                setMessage(data);
             } else {
                 const errorText = await response.text();
-                setMessage(errorText); // Error message
+                setMessage(errorText); 
             }
         } catch (error) {
             setMessage('An error occurred. Please try again.');
@@ -94,7 +100,7 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                 />
-                <button type="submit" style={{color: 'white'}}>Register</button>
+                <button type="submit" style={{color: 'white'}} onClick={handleRedirect}>Register</button>
             </form>
             {message && <p>{message}</p>}
         </div>

@@ -1,12 +1,10 @@
 package com.swipebyte.project.controllers;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.swipebyte.project.dto.*;
 import com.swipebyte.project.entity.*;
-import com.swipebyte.project.repository.UserRepository;
+import com.swipebyte.project.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +17,9 @@ public class RegisterController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private ProfileRepository profileRepo;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -41,7 +42,11 @@ public class RegisterController {
         user.setNumcoins(0);
         user.setSwipedRightRestaurants(new HashSet<Restaurant>());
         user.setVisitedRestaurants(new HashSet<Restaurant>());
-        user.setProfile(new UserProfile());
+        UserProfile newProfile = new UserProfile();
+        newProfile.setUser(user);
+        newProfile.setBio("");
+        profileRepo.save(newProfile);
+        user.setProfile(newProfile);
 
         userRepo.save(user);
 

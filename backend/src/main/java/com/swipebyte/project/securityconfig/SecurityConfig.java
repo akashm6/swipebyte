@@ -1,5 +1,6 @@
 package com.swipebyte.project.securityconfig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import static org.springframework.security.config.Customizer.*;
@@ -8,28 +9,27 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/register"))
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/register", "/oauth2/**").permitAll();
-                    auth.anyRequest().authenticated();
-                })
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll())
-                .oauth2Login(withDefaults())
-                .logout(logout -> logout.logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/register").permitAll()
+                        .anyRequest().authenticated())
+                .userDetailsService(userDetailsService)
                 .build();
+
     }
 
     @Bean

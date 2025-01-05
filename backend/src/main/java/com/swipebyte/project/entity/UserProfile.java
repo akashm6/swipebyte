@@ -1,6 +1,6 @@
 package com.swipebyte.project.entity;
 
-import java.util.List;
+import java.util.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +19,7 @@ public class UserProfile {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ElementCollection
-    private List<String> favoritecuisines;
+    private String favoritecuisines;
 
     /*
      * A single profile can have many reviews

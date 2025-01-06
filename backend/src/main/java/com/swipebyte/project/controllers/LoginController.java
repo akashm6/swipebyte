@@ -32,7 +32,6 @@ public class LoginController {
         return user;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto login) {
 

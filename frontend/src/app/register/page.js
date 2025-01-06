@@ -16,7 +16,7 @@ export default function RegisterPage() {
 
     const router = useRouter()
     const handleRedirect = () => {
-        router.push("/setup_profile")
+        router.push("/login")
     };
 
     const handleChange = (e) => {

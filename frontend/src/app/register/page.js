@@ -1,65 +1,67 @@
 "use client";
-import { useState, } from 'react';
-import { useRouter } from 'next/navigation';
-import SearchDropdown from '../components/SearchDropdown';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+// Dynamically import SearchDropdown with SSR disabled
+const SearchDropdown = dynamic(() => import("../components/SearchDropdown"), { ssr: false });
+
 
 export default function RegisterPage() {
-
     const [formData, setFormData] = useState({
-        username: '',
-        first_name: '',
-        last_name: '',
-        password: '',
-        confirmPassword: '',
-        location: '',
-        email: '',
+        username: "",
+        first_name: "",
+        last_name: "",
+        password: "",
+        confirmPassword: "",
+        location: "",
+        email: "",
     });
 
     const [locationSuggestions, setSuggestions] = useState([]);
-    const [message, setMessage] = useState('');
-    const router = useRouter()
-    const handleRedirect = () => {
-        router.push("/login")
-    };
+    const [message, setMessage] = useState("");
+    const router = useRouter();
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleLocationChange = async (e) => {
-        const {name, value} = e.target;
-        setFormData((prev => ({...prev, [name]: value})));
-
+    const handleLocationChange = async (value) => {
         try {
-            const locResponse = await fetch(`http://localhost:8080/location/autocomplete?input=${value}`, {
-                method: "GET",
-            });
+            const locResponse = await fetch(
+                `http://localhost:8080/location/autocomplete?input=${value}`,
+                {
+                    method: "GET",
+                }
+            );
 
             const locData = await locResponse.json();
-            const locations = locData.predictions.map(
-                loc => loc.description
-            );
-        
+            const locations = locData.predictions.map((loc) => ({
+                value: loc.description,
+                label: loc.description,
+            }));
+
             setSuggestions(locations);
-        }
-
-        
-        
-        catch(error) {
-
+        } catch (error) {
             setMessage("No Locations found.");
         }
-    }
+    };
+
+    const handleLocationSelect = (selectedOption) => {
+        console.log(selectedOption)
+        setFormData((prev) => ({ ...prev, location: selectedOption.value }));
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/register', {
-                method: 'POST',
+            const response = await fetch("http://localhost:8080/register", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
             });
@@ -67,19 +69,20 @@ export default function RegisterPage() {
             if (response.ok) {
                 const data = await response.text();
                 setMessage(data);
+                router.push('/login')
             } else {
                 const errorText = await response.text();
-                setMessage(errorText); 
+                setMessage(errorText);
             }
         } catch (error) {
-            setMessage('An error occurred. Please try again.');
+            setMessage("An error occurred. Please try again.");
         }
     };
 
     return (
         <div>
             <h1>Register</h1>
-            <form onSubmit={handleSubmit} style = {{color: "black"}}>
+            <form onSubmit={handleSubmit} style={{ color: "black" }}>
                 <input
                     type="text"
                     name="username"
@@ -87,6 +90,11 @@ export default function RegisterPage() {
                     value={formData.username}
                     onChange={handleChange}
                     required
+                />
+                <SearchDropdown
+                    suggestions={locationSuggestions}
+                    onInputChange={handleLocationChange}
+                    onSelect={handleLocationSelect}
                 />
                 <input
                     type="text"
@@ -113,11 +121,11 @@ export default function RegisterPage() {
                     required
                 />
                 <input
-                    type="text"
-                    name="location"
-                    placeholder="Location"
-                    value={formData.location}
-                    onChange={handleLocationChange}
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
                     required
                 />
                 <input
@@ -128,11 +136,15 @@ export default function RegisterPage() {
                     onChange={handleChange}
                     required
                 />
-                <button type="submit" style={{color: 'white'}} onClick={handleRedirect}>Register</button>
+                <button
+                    type="submit"
+                    style={{ color: "white" }}
+                    onClick={handleSubmit}
+                >
+                    Register
+                </button>
             </form>
             {message && <p>{message}</p>}
         </div>
     );
 }
-
-

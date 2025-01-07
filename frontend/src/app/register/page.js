@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-// Dynamically import SearchDropdown with SSR disabled
 const SearchDropdown = dynamic(() => import("../components/SearchDropdown"), { ssr: false });
 
 

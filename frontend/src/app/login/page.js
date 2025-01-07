@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({
-        username: "",
         email: "",
         password: "",
     });
@@ -42,13 +41,6 @@ export default function LoginPage() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-    <input style = {{color: 'black'}}
-        type="text"
-        name="username" 
-        placeholder="Username"
-        value={formData.username}
-        onChange={handleChange}
-    />
     <input style = {{color: 'black'}}
         type="text"
         name="email"

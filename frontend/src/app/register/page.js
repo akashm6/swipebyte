@@ -41,7 +41,6 @@ export default function RegisterPage() {
             );
 
             const locData = await locResponse.json();
-            console.log(locData)
             const locations = locData.predictions.map((loc) => ({
                 value: loc.description,
                 label: loc.description,

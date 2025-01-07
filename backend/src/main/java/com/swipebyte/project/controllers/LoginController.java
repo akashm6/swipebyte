@@ -19,27 +19,13 @@ public class LoginController {
     @Autowired
     private PasswordEncoder encoder;
 
-    public UserEntity findByUsernameorEmail(String username, String email) {
-
-        UserEntity user = null;
-
-        if (username == null) {
-            user = userRepo.findByEmail(email);
-        } else {
-            user = userRepo.findByUsername(username);
-        }
-
-        return user;
-    }
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto login) {
 
-        String input_user = login.getUsername() != null ? login.getUsername() : null;
         String input_pass = login.getPassword();
         String input_email = login.getEmail() != null ? login.getEmail() : null;
 
-        UserEntity user = findByUsernameorEmail(input_user, input_email);
+        UserEntity user = userRepo.findByEmail(input_email);
 
         if (user == null) {
             return ResponseEntity.badRequest().body(Map.of("message", "This user does not exist."));
@@ -48,7 +34,6 @@ public class LoginController {
         if (encoder.matches(input_pass, user.getPassword())) {
             return ResponseEntity.ok(Map.of(
                     "id", user.getId(),
-                    "username", user.getUsername(),
                     "email", user.getEmail(),
                     "message", "Login successful!"));
         }

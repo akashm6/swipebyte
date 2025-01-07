@@ -9,13 +9,11 @@ import lombok.*;
 public class LoginDto {
 
     private Long id;
-    private String username;
     private String email;
     private String password;
 
-    public LoginDto(Long id, String username, String email) {
+    public LoginDto(Long id, String email) {
         this.id = id;
-        this.username = username;
         this.email = email;
     }
 

@@ -1,6 +1,7 @@
 "use client";
 import { useState, } from 'react';
 import { useRouter } from 'next/navigation';
+import SearchDropdown from '../components/SearchDropdown';
 
 export default function RegisterPage() {
 
@@ -31,16 +32,24 @@ export default function RegisterPage() {
         setFormData((prev => ({...prev, [name]: value})));
 
         try {
-            const response = await fetch(`http://localhost:8080/location/autocomplete?input=${value}`)
-            const data = response.text();
-            console.log(data);
+            const locResponse = await fetch(`http://localhost:8080/location/autocomplete?input=${value}`, {
+                method: "GET",
+            });
+
+            const locData = await locResponse.json();
+            const locations = locData.predictions.map(
+                loc => loc.description
+            );
+        
+            setSuggestions(locations);
         }
 
+        
+        
         catch(error) {
+
             setMessage("No Locations found.");
         }
-
-
     }
 
     const handleSubmit = async (e) => {

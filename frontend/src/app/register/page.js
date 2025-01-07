@@ -3,17 +3,19 @@ import { useState, } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
+
     const [formData, setFormData] = useState({
         username: '',
         first_name: '',
         last_name: '',
         password: '',
+        confirmPassword: '',
         location: '',
         email: '',
     });
 
+    const [locationSuggestions, setSuggestions] = useState([]);
     const [message, setMessage] = useState('');
-
     const router = useRouter()
     const handleRedirect = () => {
         router.push("/login")
@@ -23,6 +25,23 @@ export default function RegisterPage() {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    const handleLocationChange = async (e) => {
+        const {name, value} = e.target;
+        setFormData((prev => ({...prev, [name]: value})));
+
+        try {
+            const response = await fetch(`http://localhost:8080/location/autocomplete?input=${value}`)
+            const data = response.text();
+            console.log(data);
+        }
+
+        catch(error) {
+            setMessage("No Locations found.");
+        }
+
+
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -89,7 +108,7 @@ export default function RegisterPage() {
                     name="location"
                     placeholder="Location"
                     value={formData.location}
-                    onChange={handleChange}
+                    onChange={handleLocationChange}
                     required
                 />
                 <input
@@ -106,3 +125,5 @@ export default function RegisterPage() {
         </div>
     );
 }
+
+

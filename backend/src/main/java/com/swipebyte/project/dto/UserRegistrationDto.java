@@ -16,6 +16,7 @@ public class UserRegistrationDto {
     private String last_name;
     private String email;
     private String password;
+    private String confirmPassword;
     private String location;
     private Integer numCoins = 0;
     private UserProfile userProfile;

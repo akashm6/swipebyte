@@ -31,17 +31,25 @@ public class RegisterController {
         }
 
         UserEntity user = new UserEntity();
-        // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setUsername(registerDto.getUsername());
         user.setFirst_name(registerDto.getFirst_name());
         user.setLast_name(registerDto.getLast_name());
-        String encodedPassword = encoder.encode(registerDto.getPassword());
+        String password = registerDto.getPassword();
+        String confirm = registerDto.getConfirmPassword();
+
+        if (!password.equals(confirm)) {
+            return ResponseEntity.badRequest().body("Passwords do not match. Please try again.");
+        }
+
+        String encodedPassword = encoder.encode(password);
+
         user.setPassword(encodedPassword);
         user.setLocation(registerDto.getLocation());
         user.setEmail(registerDto.getEmail());
         user.setNumcoins(0);
         user.setSwipedRightRestaurants(new HashSet<Restaurant>());
         user.setVisitedRestaurants(new HashSet<Restaurant>());
+
         UserProfile newProfile = new UserProfile();
         newProfile.setUser(user);
         newProfile.setBio("");

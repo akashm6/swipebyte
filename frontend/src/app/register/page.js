@@ -1,12 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-const SearchDropdown = dynamic(() => import("../components/SearchDropdown"), { ssr: false });
+const SearchDropdown = dynamic(() => import("../components/SearchDropdown"), { 
+    ssr: false,
+    loading: () => <h1 style={{color: 'white'}}>Loading locations...</h1>,
+});
 
 
 export default function RegisterPage() {
+
     const [formData, setFormData] = useState({
         username: "",
         first_name: "",
@@ -37,6 +41,7 @@ export default function RegisterPage() {
             );
 
             const locData = await locResponse.json();
+            console.log(locData)
             const locations = locData.predictions.map((loc) => ({
                 value: loc.description,
                 label: loc.description,

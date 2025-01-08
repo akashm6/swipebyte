@@ -8,6 +8,7 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.util.*;
 
 @Component
 public class JwtUtility {
@@ -17,6 +18,14 @@ public class JwtUtility {
 
     public String generateToken(String userId) {
         JwtBuilder builder = Jwts.builder();
+        Date now = new Date();
+        Date expiration = new Date(System.currentTimeMillis() + expirationTime);
+
+        return builder.setIssuedAt(now)
+                .setExpiration(expiration)
+                .setSubject(userId)
+                .signWith(secretKey)
+                .compact();
     }
 
 }

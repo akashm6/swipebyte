@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import com.swipebyte.project.dto.*;
 import java.util.*;
 import com.swipebyte.project.entity.*;
+import com.swipebyte.project.dto.*;
+import com.swipebyte.project.securityconfig.*;
 
 import com.swipebyte.project.repository.UserRepository;
 
@@ -18,6 +19,9 @@ public class LoginController {
 
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private JwtUtility jwtUtility;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto login) {
@@ -32,7 +36,11 @@ public class LoginController {
         }
 
         if (encoder.matches(input_pass, user.getPassword())) {
+
+            String token = jwtUtility.generateToken(user.getId().toString());
+
             return ResponseEntity.ok(Map.of(
+                    "token", token,
                     "id", user.getId(),
                     "email", user.getEmail(),
                     "message", "Login successful!"));

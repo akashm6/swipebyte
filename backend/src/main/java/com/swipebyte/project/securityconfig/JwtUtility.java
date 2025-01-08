@@ -1,12 +1,8 @@
 package com.swipebyte.project.securityconfig;
 
 import java.security.Key;
-
 import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import java.util.*;
 
@@ -26,6 +22,23 @@ public class JwtUtility {
                 .setSubject(userId)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public String validateToken(String token) {
+
+        try {
+            Jws<Claims> parser = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+
+            return parser.getBody().getSubject();
+        }
+
+        catch (JwtException e) {
+
+            return null;
+        }
     }
 
 }

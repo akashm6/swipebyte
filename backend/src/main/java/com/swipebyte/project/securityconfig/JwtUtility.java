@@ -32,7 +32,10 @@ public class JwtUtility {
                     .build()
                     .parseClaimsJws(token);
 
-            return parser.getBody().getSubject();
+            // returns the userId in the payload
+            String userId = parser.getBody().getSubject();
+
+            return userId;
         }
 
         catch (JwtException e) {

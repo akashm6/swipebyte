@@ -52,7 +52,8 @@ public class RegisterController {
 
         UserProfile newProfile = new UserProfile();
         newProfile.setUser(user);
-        newProfile.setBio("");
+        newProfile.setBio("No bio written.");
+        newProfile.setFavoritecuisines("No favorite cuisines set.");
         profileRepo.save(newProfile);
         user.setProfile(newProfile);
 

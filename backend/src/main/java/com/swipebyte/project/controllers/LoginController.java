@@ -41,7 +41,10 @@ public class LoginController {
 
             return ResponseEntity.ok(Map.of(
                     "token", token,
-                    "id", user.getId(),
+                    "userId", user.getId(),
+                    "location", user.getLocation(),
+                    "bio", user.getProfile().getBio(),
+                    "favoritecuisines", user.getProfile().getFavoritecuisines(),
                     "email", user.getEmail(),
                     "message", "Login successful!"));
         }

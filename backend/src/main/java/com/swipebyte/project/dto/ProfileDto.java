@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ProfileDto {
 
-    private Long id;
+    private Long userId;
     private String bio;
     private String favoriteCuisines;
 

@@ -26,7 +26,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/location/*").permitAll()
+                        .requestMatchers("/login", "/register", "/api/*", "/profile").permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
                 // add the JWT filter before built in login filter to avoid unnecessary re-login

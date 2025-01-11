@@ -5,17 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.ResponseEntity;
 
-import java.util.*;
-import com.swipebyte.project.entity.*;
-
 @RestController
-@RequestMapping("/location")
+@RequestMapping("/api")
 public class LocationAutoController {
 
     @Value("${places.api.key}")
     private String key;
 
-    @GetMapping("/autocomplete")
+    @GetMapping("/location")
     public ResponseEntity<?> getAutoComplete(@RequestParam String input) {
 
         try {

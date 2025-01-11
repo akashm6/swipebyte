@@ -1,6 +1,5 @@
 package com.swipebyte.project.securityconfig;
 
-import com.swipebyte.project.securityconfig.*;
 import jakarta.servlet.FilterChain;
 import org.springframework.lang.NonNull;
 import jakarta.servlet.ServletException;

@@ -23,12 +23,16 @@ export default function LoginPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
-            console.log(response)
             const data = await response.json(); 
+            console.log(response);
             if (response.ok) {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.userId);
+                localStorage.setItem('location', data.location);
+                localStorage.setItem('bio', data.bio);
+                localStorage.setItem('favoritecuisines', data.favoritecuisines);
                 setMessage(data.message || "Login successful!");
-                console.log("User ID:", data.id); 
-                router.push("/"); 
+                router.push("/home"); 
             } else {
                 setMessage(data.message || "Invalid credentials.");
             }

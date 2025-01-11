@@ -34,7 +34,7 @@ export default function RegisterPage() {
     const handleLocationChange = async (value) => {
         try {
             const locResponse = await fetch(
-                `http://localhost:8080/location/autocomplete?input=${value}`,
+                `http://localhost:8080/api/location?input=${value}`,
                 {
                     method: "GET",
                 }

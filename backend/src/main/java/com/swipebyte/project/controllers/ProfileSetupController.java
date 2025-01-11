@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.*;
 
 import org.springframework.http.ResponseEntity;
-import java.util.*;
 import com.swipebyte.project.dto.*;
 import com.swipebyte.project.entity.*;
 import com.swipebyte.project.repository.*;
@@ -20,26 +19,34 @@ public class ProfileSetupController {
     @Autowired
     private ProfileRepository profileRepo;
 
-    @PostMapping("/setup_profile")
+    @PostMapping("/profile")
     public ResponseEntity<?> editProfile(@RequestBody ProfileDto profile) {
 
-        UserProfile currentProfile = profileRepo.findById(profile.getId()).orElse(null);
+        UserEntity user = userRepo.findById(profile.getUserId()).get();
 
-        if (currentProfile == null) {
+        UserProfile currProfile = user.getProfile();
+
+        if (currProfile == null) {
 
             return ResponseEntity.badRequest().body("Profile not found.");
         }
-        String currentBio = currentProfile.getBio();
+        String currentBio = currProfile.getBio();
+        String currentCuisines = currProfile.getFavoritecuisines();
 
+        String newCuisines = profile.getFavoriteCuisines();
         String newBio = profile.getBio();
         if (!newBio.equals(currentBio)) {
 
-            currentProfile.setBio(newBio);
+            currProfile.setBio(newBio);
         }
 
-        profileRepo.save(currentProfile);
+        if (!newCuisines.equals(currentCuisines)) {
+            currProfile.setFavoritecuisines(newCuisines);
+        }
 
-        return ResponseEntity.ok(new ProfileDto(profile.getId(), profile.getBio(), profile.getFavoriteCuisines()));
+        profileRepo.save(currProfile);
+
+        return ResponseEntity.ok("Profile changed!");
     }
 
 }

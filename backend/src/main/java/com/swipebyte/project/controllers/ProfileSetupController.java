@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.*;
 
 import org.springframework.http.ResponseEntity;
+import java.util.*;
 import com.swipebyte.project.dto.*;
 import com.swipebyte.project.entity.*;
 import com.swipebyte.project.repository.*;
@@ -31,9 +32,9 @@ public class ProfileSetupController {
             return ResponseEntity.badRequest().body("Profile not found.");
         }
         String currentBio = currProfile.getBio();
-        String currentCuisines = currProfile.getFavoritecuisines();
+        List<String> currentCuisines = currProfile.getFavoritecuisines();
 
-        String newCuisines = profile.getFavoriteCuisines();
+        List<String> newCuisines = profile.getFavoriteCuisines();
         String newBio = profile.getBio();
         if (!newBio.equals(currentBio)) {
 

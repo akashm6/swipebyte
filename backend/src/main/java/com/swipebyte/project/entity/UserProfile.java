@@ -15,11 +15,12 @@ public class UserProfile {
     private Long id;
 
     private String bio;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    private String favoritecuisines;
+    @ElementCollection
+    private List<String> favoritecuisines;
 
     /*
      * A single profile can have many reviews

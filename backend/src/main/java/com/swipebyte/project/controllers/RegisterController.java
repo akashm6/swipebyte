@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.swipebyte.project.dto.*;
 import com.swipebyte.project.entity.*;
 import com.swipebyte.project.repository.*;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,8 @@ public class RegisterController {
         UserProfile newProfile = new UserProfile();
         newProfile.setUser(user);
         newProfile.setBio("No bio written.");
-        newProfile.setFavoritecuisines("No favorite cuisines set.");
+        ArrayList<String> favoriteCuisines = new ArrayList<String>();
+        newProfile.setFavoritecuisines(favoriteCuisines);
         profileRepo.save(newProfile);
         user.setProfile(newProfile);
 

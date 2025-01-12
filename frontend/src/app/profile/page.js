@@ -4,13 +4,25 @@ import { useRouter } from "next/navigation";
 
 export default function SetupProfile() {
 
+    const cuisines = {
+        'afghani': 'Afghani', 'african': 'African', 'newamerican': 'New American', 'tradamerican': 'Traditional American', "arabian": 'Arabian', "argentine": 'Argentine',
+        "armenian": 'Armenian', "australian": 'Australian', "bangladeshi": 'Bangladeshi', "bbq": 'BBQ', "brazilian": 'Brazilian', "breakfast_brunch": "Breakfast/Brunch", 
+        "british": 'British', "buffets": 'Buffets', "burgers": 'Burgers', "cafes": 'Cafes', "cajun": 'Cajun', "caribbean": 'Caribbean', "chicken_wings": 'Chicken Wings',
+        "chinese": 'Chinese', "comfortfood": "Comfort Food", "cuban": "Cuban", "delis": "Delis", "diners": "Diners", "ethiopian": "Ethiopian", "filipino": "Filipino",
+        "french": "French", "german": "German", "gluten_free": "Gluten-Free", "greek": "Greek", "halal": "Halal", "hotpot": "Hot Pot", "indpak": "Indian/Pakistani",
+        "italian": "Italian", "japanese": "Japanese", "ramen": "Ramen", "korean": "Korean", "kosher": "Kosher", "mexican": "Mexican", "pizza": "Pizza", "russian": "Russian",
+        "salad": "Salad", "sandwiches": "Sandwiches", "seafood": "Seafood", "soulfood": "Soul Food", "soup": "Soup", "southern": "Southern", "spanish": "Spanish",
+        "steak": "Steak", "sushi": "Sushi", "tapas": "Tapas", "thai": "Thai", "turkish": "Turkish", "vegan": "Vegan", "vegetarian": "Vegetarian", "vietnamese": "Vietnamese"
+    }
+
     const userId = localStorage.getItem("userId");
     const bio = localStorage.getItem('bio');
 
+    const [checkedCuisines, setCheckedCuisines] = useState([]);
 
     const [formData, setFormData] = useState({
         'bio': '',
-        'favoriteCuisines': ''
+        'favoriteCuisines': []
     }
     )
 
@@ -24,12 +36,30 @@ export default function SetupProfile() {
         router.push('/home');
     }
 
-    const handleChange = (e) => {
+    const handleBioChange = (e) => {
         const {name, value} = e.target;
         setFormData((prev) => ({
             ...prev, [name]: value
         }));
     }
+    
+    const handleCuisineChange = (e) => {
+        const {name, value} = e.target;
+
+        setCheckedCuisines((prev) => {
+
+            const updatedCuisines = e.target.checked ? 
+            [...prev, value] :
+            prev.filter((cuisine) => cuisine !== value);
+
+            setFormData((formData) => ({
+                ...formData,
+                favoriteCuisines: updatedCuisines,
+                }));
+            return updatedCuisines;
+    });
+};
+
 
     const [message, setMessage] = useState('');
     const handleSubmit = async (e) => {
@@ -61,25 +91,33 @@ export default function SetupProfile() {
         handleRedirect();
         };
         
-    return (
-        <div>
-            <form onSubmit={handleSubmit} style = {{color: "black"}}>
-                <input style={{color: "black"}}
-                    type = 'text'
-                    name = 'bio'
-                    placeholder = 'bio'
-                    value = {formData.bio}
-                    onChange={handleChange}
-                />
-                <input style={{color: "black"}}
-                    type = 'text'
-                    name = 'favoriteCuisines'
-                    placeholder = 'cuisines'
-                    value = {formData.favoriteCuisines}
-                    onChange={handleChange}
-                />
-                <button type="submit" style={{color: 'white'}} onClick={handleRedirect}>Submit</button>
-            </form>
-        </div>
-    )
+        return (
+            <div>
+                <form onSubmit={handleSubmit} style={{ color: "black" }}>
+                    <input
+                        style={{ color: "black" }}
+                        type="text"
+                        name="bio"
+                        placeholder="Bio"
+                        value={formData.bio}
+                        onChange={handleBioChange}
+                    />
+                    {Object.entries(cuisines).map(([key, value]) => (
+                    <div key={key}>
+                        <label style={{color: 'white'}}>
+                            <input
+                                type="checkbox"
+                                value={key}
+                                onChange={handleCuisineChange}
+                            />
+                            {value}
+                        </label>
+                    </div>
+                ))}
+                    <button type="submit" style={{ color: "white" }}>
+                        Submit
+                    </button>
+                </form>
+            </div>
+        );
 }

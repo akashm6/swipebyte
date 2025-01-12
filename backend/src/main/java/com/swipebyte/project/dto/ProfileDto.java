@@ -1,6 +1,7 @@
 package com.swipebyte.project.dto;
 
 import lombok.*;
+import java.util.*;
 
 @Getter
 @Setter
@@ -10,6 +11,6 @@ public class ProfileDto {
 
     private Long userId;
     private String bio;
-    private String favoriteCuisines;
+    private List<String> favoriteCuisines;
 
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useState, React } from "react";
+import { useState, React, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SetupProfile() {
@@ -17,19 +17,24 @@ export default function SetupProfile() {
 
     const userId = localStorage.getItem("userId");
 
-    const bio = localStorage.getItem('bio');
-
-    const favs = localStorage.getItem("favoritecuisines")
+    // favorite cuisines is a string so we split to create an array 
+    const favs = localStorage.getItem("favoritecuisines") || []
+    const currentBio = localStorage.getItem('bio') || '';
     const currentFavorites = favs.split(',');
 
-    const [checkedCuisines, setCheckedCuisines] = useState(currentFavorites);
 
+    // keep our initial data as whatever's persisted in the database already
     const [formData, setFormData] = useState({
-        'bio': '',
-        'favoriteCuisines': []
+        'bio': currentBio,
+        'favoriteCuisines': currentFavorites
     }
     )
 
+    // set the initial state to be already favorited cuisines, so we can have them already checked
+    const [checkedCuisines, setCheckedCuisines] = useState(currentFavorites);
+
+
+    // ProfileDto requires the userId as well, so we grab it here 
     const requestData = {
         ...formData,
         userId: localStorage.getItem("userId")
@@ -42,11 +47,10 @@ export default function SetupProfile() {
 
     const handleBioChange = (e) => {
         const {name, value} = e.target;
-        setFormData((prev) => ({
-            ...prev, [name]: value
-        }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     }
     
+    // if we checked a box, we add it, otherwise we filter the array to remove that cuisine
     const handleCuisineChange = (e) => {
         const {name, value} = e.target;
 
@@ -64,11 +68,12 @@ export default function SetupProfile() {
     });
 };
 
+
     const [message, setMessage] = useState('');
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        console.log('form data:', formData);
+        // fetch from ProfileController with id, bio, and cuisines
         try {
             const response = await fetch('http://localhost:8080/profile', {
                 method: "POST",
@@ -79,6 +84,7 @@ export default function SetupProfile() {
             })
 
             if (response.ok) {
+                // profileDB is correctly updated on submit
                 const success = await response.text();
                 setMessage(success);
             }
@@ -91,6 +97,7 @@ export default function SetupProfile() {
             setMessage("An error occurred. Please try again.");   
 
         };
+        // push to home
         handleRedirect();
         };
         
@@ -102,7 +109,7 @@ export default function SetupProfile() {
                         type="text"
                         name="bio"
                         placeholder="Bio"
-                        value={bio}
+                        value={formData.bio}
                         onChange={handleBioChange}
                     />
                     {Object.entries(cuisines).map(([key, value]) => (
@@ -112,6 +119,7 @@ export default function SetupProfile() {
                                 type="checkbox"
                                 value={key}
                                 onChange={handleCuisineChange}
+                                // initially render page with whatever's favorited in the db as already checked
                                 checked={checkedCuisines.includes(key)}
                             />
                             {value}

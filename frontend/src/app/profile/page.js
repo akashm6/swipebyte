@@ -16,9 +16,13 @@ export default function SetupProfile() {
     }
 
     const userId = localStorage.getItem("userId");
+
     const bio = localStorage.getItem('bio');
 
-    const [checkedCuisines, setCheckedCuisines] = useState([]);
+    const favs = localStorage.getItem("favoritecuisines")
+    const currentFavorites = favs.split(',');
+
+    const [checkedCuisines, setCheckedCuisines] = useState(currentFavorites);
 
     const [formData, setFormData] = useState({
         'bio': '',
@@ -60,7 +64,6 @@ export default function SetupProfile() {
     });
 };
 
-
     const [message, setMessage] = useState('');
     const handleSubmit = async (e) => {
 
@@ -99,7 +102,7 @@ export default function SetupProfile() {
                         type="text"
                         name="bio"
                         placeholder="Bio"
-                        value={formData.bio}
+                        value={bio}
                         onChange={handleBioChange}
                     />
                     {Object.entries(cuisines).map(([key, value]) => (
@@ -109,6 +112,7 @@ export default function SetupProfile() {
                                 type="checkbox"
                                 value={key}
                                 onChange={handleCuisineChange}
+                                checked={checkedCuisines.includes(key)}
                             />
                             {value}
                         </label>

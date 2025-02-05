@@ -1,13 +1,20 @@
 import requests
 from dotenv import load_dotenv
 from geopy.geocoders import Nominatim
+from flask import Flask, request, redirect, session, jsonify
 import os
 
+
+
 load_dotenv()
+app = Flask(__name__)
+
 places_key = os.getenv("RESTAURANT_KEY")
 places_url = f'https://places.googleapis.com/v1/places:searchNearby'
 geocoder = Nominatim(user_agent="swipebyte")
 
+@app.route("/home/changelocation")
+@app.route("/home")
 def findCoordinates(location):
     full_loc = geocoder.geocode(location)
     lat = full_loc.latitude
@@ -25,6 +32,9 @@ def photo(photo_uri):
     data = r.json()
     return data.get('photo_uri')
 
+@app.route("/home")
+@app.route("home/changelocation")
+@app.route("home/newrecs")
 def getNearby(location, preferences):
     body = {
   "includedTypes": preferences,

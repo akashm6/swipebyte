@@ -45,17 +45,12 @@ public class RegisterController {
         String encodedPassword = encoder.encode(password);
 
         user.setPassword(encodedPassword);
-        user.setLocation(registerDto.getLocation());
         user.setEmail(registerDto.getEmail());
-        user.setNumcoins(0);
-        user.setSwipedRightRestaurants(new HashSet<Restaurant>());
-        user.setVisitedRestaurants(new HashSet<Restaurant>());
+        user.setSwipedRightProjects(new HashSet<Project>());
 
         UserProfile newProfile = new UserProfile();
         newProfile.setUser(user);
         newProfile.setBio("No bio written.");
-        ArrayList<String> favoriteCuisines = new ArrayList<String>();
-        newProfile.setFavoritecuisines(favoriteCuisines);
         profileRepo.save(newProfile);
         user.setProfile(newProfile);
 

@@ -22,19 +22,8 @@ public class UserEntity {
     private UserProfile profile;
 
     @ManyToMany
-    @JoinTable(name = "swiped_right", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
-    private Set<Restaurant> swipedRightRestaurants;
-
-    @ManyToMany
-    @JoinTable(name = "visited_restaurants", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "restaurant_id"))
-    private Set<Restaurant> visitedRestaurants;
-    /*
-     * user_id restaurant_id
-     * 1 1
-     * 1 2
-     * 2 1
-     * 2 3
-     */
+    @JoinTable(name = "swiped_right", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+    private Set<Project> swipedRightProjects;
 
     private String username;
 
@@ -45,19 +34,5 @@ public class UserEntity {
     private String email;
 
     private String password;
-
-    private String location;
-
-    private Integer numcoins;
-
-    public Integer getNumAchievements() {
-
-        return profile.getAchievements().size();
-    }
-
-    public List<Achievement> getAchievements() {
-
-        return profile.getAchievements();
-    }
 
 }

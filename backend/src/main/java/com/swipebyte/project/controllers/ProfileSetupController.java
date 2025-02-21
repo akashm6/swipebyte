@@ -32,17 +32,10 @@ public class ProfileSetupController {
             return ResponseEntity.badRequest().body("Profile not found.");
         }
         String currentBio = currProfile.getBio();
-        List<String> currentCuisines = currProfile.getFavoritecuisines();
-
-        List<String> newCuisines = profile.getFavoriteCuisines();
         String newBio = profile.getBio();
         if (!newBio.equals(currentBio)) {
 
             currProfile.setBio(newBio);
-        }
-
-        if (!newCuisines.equals(currentCuisines)) {
-            currProfile.setFavoritecuisines(newCuisines);
         }
 
         profileRepo.save(currProfile);

@@ -19,15 +19,4 @@ public class UserProfile {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ElementCollection
-    private List<String> favoritecuisines;
-
-    /*
-     * A single profile can have many reviews
-     * mappedBy tells us what Review will use to categorize who made the review
-     */
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userProfile")
-    private List<Achievement> achievements;
-
 }

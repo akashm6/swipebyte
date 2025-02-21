@@ -32,9 +32,9 @@ public class HomeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         }
 
-        System.out.println("User Location: " + userOpt.getLocation());
+        System.out.println("User Location: ");
 
-        return ResponseEntity.ok(userOpt.getLocation());
+        return ResponseEntity.ok("hello");
     }
 
 }

@@ -10,7 +10,7 @@ app = Flask(__name__)
 personal_acc_token = os.getenv("GITHUB_PERSONAL_ACC_TOKEN")
 
 url = "https://api.github.com/graphql"
-# Your GitHub personal access token (required for authentication)
+
 headers = {
     "Authorization": f"Bearer {personal_acc_token}",
     "Content-Type": "application/json"

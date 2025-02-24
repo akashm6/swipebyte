@@ -1,13 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-
-const SearchDropdown = dynamic(() => import("../components/SearchDropdown"), { 
-    ssr: false,
-    loading: () => <h1 style={{color: 'white'}}>Loading locations...</h1>,
-});
-
 
 export default function RegisterPage() {
 
@@ -17,11 +10,9 @@ export default function RegisterPage() {
         last_name: "",
         password: "",
         confirmPassword: "",
-        location: "",
         email: "",
     });
 
-    const [locationSuggestions, setSuggestions] = useState([]);
     const [message, setMessage] = useState("");
     const router = useRouter();
 
@@ -31,37 +22,11 @@ export default function RegisterPage() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleLocationChange = async (value) => {
-        try {
-            const locResponse = await fetch(
-                `http://localhost:8080/api/location?input=${value}`,
-                {
-                    method: "GET",
-                }
-            );
-
-            const locData = await locResponse.json();
-            const locations = locData.predictions.map((loc) => ({
-                value: loc.description,
-                label: loc.description,
-            }));
-
-            setSuggestions(locations);
-        } catch (error) {
-            setMessage("No Locations found.");
-        }
-    };
-
-    const handleLocationSelect = (selectedOption) => {
-        console.log(selectedOption)
-        setFormData((prev) => ({ ...prev, location: selectedOption.value }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8080/register", {
+            const response = await fetch("http://localhost:8080/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +37,7 @@ export default function RegisterPage() {
             if (response.ok) {
                 const data = await response.text();
                 setMessage(data);
-                router.push('/login')
+                router.push('/auth/login')
             } else {
                 const errorText = await response.text();
                 setMessage(errorText);
@@ -93,11 +58,6 @@ export default function RegisterPage() {
                     value={formData.username}
                     onChange={handleChange}
                     required
-                />
-                <SearchDropdown
-                    suggestions={locationSuggestions}
-                    onInputChange={handleLocationChange}
-                    onSelect={handleLocationSelect}
                 />
                 <input
                     type="text"

@@ -25,7 +25,7 @@ public class RegisterController {
     @Autowired
     private PasswordEncoder encoder;
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationDto registerDto) {
         if (userRepo.existsByEmail(registerDto.getEmail())) {
             return ResponseEntity.badRequest().body("This email is already registered. Try again.");

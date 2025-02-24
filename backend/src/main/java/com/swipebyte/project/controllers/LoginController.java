@@ -23,7 +23,7 @@ public class LoginController {
     @Autowired
     private JwtUtility jwtUtility;
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody LoginDto login) {
 
         String input_pass = login.getPassword();

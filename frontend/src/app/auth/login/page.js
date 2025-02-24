@@ -18,18 +18,17 @@ export default function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:8080/login", {
+            const response = await fetch("http://localhost:8080/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
             const data = await response.json(); 
+            console.log(data)
             if (response.ok) {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId);
-                localStorage.setItem('location', data.location);
                 localStorage.setItem('bio', data.bio);
-                localStorage.setItem('favoritecuisines', data.favoritecuisines);
                 setMessage(data.message || "Login successful!");
                 router.push("/home"); 
             } else {

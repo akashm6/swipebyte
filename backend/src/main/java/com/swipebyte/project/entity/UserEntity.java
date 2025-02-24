@@ -17,6 +17,9 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(unique = true)
+    private String githubId;
+
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private UserProfile profile;
@@ -31,6 +34,7 @@ public class UserEntity {
 
     private String last_name;
 
+    @Column(unique = true)
     private String email;
 
     private String password;

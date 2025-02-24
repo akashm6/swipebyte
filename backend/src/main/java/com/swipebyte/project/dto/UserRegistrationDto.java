@@ -17,10 +17,7 @@ public class UserRegistrationDto {
     private String email;
     private String password;
     private String confirmPassword;
-    private String location;
-    private Integer numCoins = 0;
     private UserProfile userProfile;
-    private HashSet<Restaurant> swipedRightRestaurants = new HashSet<Restaurant>();
-    private HashSet<Restaurant> visitedRestaurants = new HashSet<Restaurant>();
+    private HashSet<Project> swipedRightProjects = new HashSet<Project>();
 
 }

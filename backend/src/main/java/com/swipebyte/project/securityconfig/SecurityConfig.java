@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -26,10 +27,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/api/*", "/profile").permitAll()
+                        .requestMatchers("/login/*", "/auth/*", "/api/*", "/profile", "/oauth2/*", "/error")
+                        .permitAll()
                         .anyRequest().authenticated())
                 .userDetailsService(userDetailsService)
-                // add the JWT filter before built in login filter to avoid unnecessary re-login
+                .oauth2Login(oauth -> oauth.defaultSuccessUrl("http://localhost:3000/home", true))
+                .logout(withDefaults())
                 .addFilterBefore(jwtAuth, UsernamePasswordAuthenticationFilter.class)
                 .build();
 

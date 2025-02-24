@@ -9,14 +9,31 @@ app = Flask(__name__)
 
 personal_acc_token = os.getenv("GITHUB_PERSONAL_ACC_TOKEN")
 
-graphql_url = "https://api.github.com/graphql"
+url = "https://api.github.com/graphql"
 # Your GitHub personal access token (required for authentication)
 headers = {
     "Authorization": f"Bearer {personal_acc_token}",
     "Content-Type": "application/json"
 }
 
-query = ''
+query = """ {
+search(query: "language:python state:open label:\\"help wanted\\"", first: 20, type: ISSUE) {
+edges {
+  node {
+  ... on Issue {
+    title
+    url
+  }
+}
+}
+}
+}
+"""
+res = requests.post(url, json={"query": query}, headers=headers)
+data = res.json()
+print(data)
+
+
 # batch fetches projects in increments of 15
 def fetchProjects(): 
     
